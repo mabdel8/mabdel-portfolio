@@ -4,7 +4,10 @@
       "Bash(npm create:*)",
       "Bash(npm install:*)",
       "Bash(npx shadcn@latest init:*)",
-      "Bash(npx shadcn@latest add:*)"
+      "Bash(npx shadcn@latest add:*)",
+      "mcp__shadcn__list_components",
+      "mcp__shadcn__get_component",
+      "mcp__sequential-thinking__sequentialthinking"
     ],
     "deny": []
   }

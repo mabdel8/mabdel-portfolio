@@ -2,8 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import { cn } from '@/lib/utils'
+import { TypingAnimation } from '@/components/TypingAnimation'
 import { 
   ArrowRightIcon, 
   GithubIcon, 
@@ -14,13 +18,14 @@ import {
   DownloadIcon,
   ExternalLinkIcon,
   CodeIcon,
-  PaletteIcon,
   SmartphoneIcon,
-  MonitorIcon,
+  ServerIcon,
+  LayoutIcon,
   DatabaseIcon,
-  CloudIcon
+  GraduationCapIcon,
+  CalendarIcon,
+  BriefcaseIcon,
 } from 'lucide-react'
-import { cva, type VariantProps } from 'class-variance-authority'
 import profilePic from './assets/profilepic.jpeg'
 import appIcon1 from './assets/appicon1.png'
 import appIcon2 from './assets/appicon2.png'
@@ -29,135 +34,187 @@ import appIcon4 from './assets/appicon4.png'
 import appIcon5 from './assets/appicon5.png'
 import appIcon6 from './assets/appicon6.png'
 import appIcon7 from './assets/appicon7.png'
+import appIcon8 from './assets/appicon8.png'
+import appIcon9 from './assets/appicon9.png'
+import appIcon10 from './assets/appicon10.png'
 
-// Glow component
-const glowVariants = cva("absolute w-full", {
-  variants: {
-    variant: {
-      top: "top-0",
-      above: "-top-[128px]",
-      bottom: "bottom-0",
-      below: "-bottom-[128px]",
-      center: "top-[50%]",
-    },
-  },
-  defaultVariants: {
-    variant: "top",
-  },
-})
+// App Screenshots
+import app1screen1 from './assets/app1screenshots/app1screen1.png'
+import app1screen2 from './assets/app1screenshots/app1screen2.png'
+import app1screen3 from './assets/app1screenshots/app1screen3.png'
+import app1screen4 from './assets/app1screenshots/app1screen4.png'
+import app1screen5 from './assets/app1screenshots/app1screen5.png'
+import app1screen6 from './assets/app1screenshots/app1screen6.png'
+import app1screen7 from './assets/app1screenshots/app1screen7.png'
 
-const Glow = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof glowVariants>
->(({ className, variant, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(glowVariants({ variant }), className)}
-    {...props}
-  >
-    <div
-      className={cn(
-        "absolute left-1/2 h-[256px] w-[60%] -translate-x-1/2 scale-[2.5] rounded-[50%] bg-[radial-gradient(ellipse_at_center,_hsl(var(--primary)/.5)_10%,_hsl(var(--primary)/0)_60%)] sm:h-[512px]",
-        variant === "center" && "-translate-y-1/2",
-      )}
-    />
-    <div
-      className={cn(
-        "absolute left-1/2 h-[128px] w-[40%] -translate-x-1/2 scale-[2] rounded-[50%] bg-[radial-gradient(ellipse_at_center,_hsl(var(--primary)/.3)_10%,_hsl(var(--primary)/0)_60%)] sm:h-[256px]",
-        variant === "center" && "-translate-y-1/2",
-      )}
-    />
-  </div>
-))
-Glow.displayName = "Glow"
+import app10screen1 from './assets/app10screenshots/01 – iPhone16.png'
+import app10screen2 from './assets/app10screenshots/02 – iPhone16.png'
+import app10screen3 from './assets/app10screenshots/03 – iPhone16.png'
+import app10screen4 from './assets/app10screenshots/04 – iPhone16.png'
+import app10screen5 from './assets/app10screenshots/05 – iPhone16.png'
+import app10screen6 from './assets/app10screenshots/06 – iPhone16.png'
 
-
-// Sample data
-const portfolioData = {
-  hero: {
-    name: "Alex Johnson",
-    title: "iOS Developer & UI Designer",
-    description: "Crafting beautiful, user-centered mobile experiences with Swift and modern design principles. Passionate about creating apps that make a difference.",
-    image: profilePic,
-    resumeUrl: "#"
+// Screenshot mappings
+const appScreenshots = {
+  1: {
+    screens: [app10screen1, app10screen2, app10screen3, app10screen4, app10screen5, app10screen6],
+    name: "Mobile Automation MCP Server"
   },
-  apps: [
-    {
-      id: 1,
-      name: "Budget Tracker",
-      description: "Smart budgeting made simple",
-      icon: appIcon1,
-      appStoreUrl: "#"
-    },
-    {
-      id: 2,
-      name: "Fitness Coach",
-      description: "Your personal workout companion",
-      icon: appIcon2,
-      appStoreUrl: "#"
-    },
-    {
-      id: 3,
-      name: "Recipe Finder",
-      description: "Discover delicious recipes",
-      icon: appIcon3,
-      appStoreUrl: "#"
-    },
-    {
-      id: 4,
-      name: "Task Manager",
-      description: "Organize your daily tasks",
-      icon: appIcon4,
-      appStoreUrl: "#"
-    },
-    {
-      id: 5,
-      name: "Weather Plus",
-      description: "Beautiful weather forecasts",
-      icon: appIcon5,
-      appStoreUrl: "#"
-    },
-    {
-      id: 6,
-      name: "Music Player",
-      description: "Enjoy your favorite tunes",
-      icon: appIcon6,
-      appStoreUrl: "#"
-    },
-    {
-      id: 7,
-      name: "Photo Editor",
-      description: "Edit photos like a pro",
-      icon: appIcon7,
-      appStoreUrl: "#"
-    }
-  ],
-  techStack: [
-    { name: "Swift", icon: CodeIcon, category: "Language" },
-    { name: "SwiftUI", icon: SmartphoneIcon, category: "Framework" },
-    { name: "UIKit", icon: PaletteIcon, category: "Framework" },
-    { name: "Xcode", icon: MonitorIcon, category: "Tool" },
-    { name: "Core Data", icon: DatabaseIcon, category: "Database" },
-    { name: "CloudKit", icon: CloudIcon, category: "Backend" },
-    { name: "Figma", icon: PaletteIcon, category: "Design" },
-    { name: "Git", icon: CodeIcon, category: "Version Control" }
-  ],
-  about: {
-    bio: "With over 5 years of experience in iOS development, I specialize in creating intuitive and performant mobile applications. My journey began with a passion for design and evolved into a love for bringing digital experiences to life through code.",
-    experience: "5+ Years",
-    projects: "25+ Apps",
-    clients: "Happy Users Worldwide"
-  },
-  contact: {
-    email: "alex.johnson@example.com",
-    phone: "+1 (555) 123-4567",
-    location: "San Francisco, CA",
-    linkedin: "https://linkedin.com/in/alexjohnson",
-    github: "https://github.com/alexjohnson"
+  2: {
+    screens: [app1screen1, app1screen2, app1screen3, app1screen4, app1screen5, app1screen6, app1screen7],
+    name: "iOS App 4"
   }
 }
 
-// Hero Section Component
+
+
+// Portfolio data
+const portfolioData = {
+  hero: {
+    greeting: "Hi, I'm Mohamed",
+    title: "Software Engineer & iOS Developer. I love building things and helping people.",
+    description: "Building elegant mobile experiences and scalable software solutions",
+    image: profilePic,
+    resumeUrl: "#"
+  },
+  about: {
+    bio: "Computer Science graduate from Towson University with expertise in iOS development and full-stack engineering. Currently leading the development of eight App Store applications while specializing in Swift, React, and modern backend technologies. Passionate about creating intuitive user experiences and building scalable systems that serve thousands of users daily.",
+    highlights: [
+      "10 Apps on App Store",
+      "Full-Stack Developer",
+      "iOS & Mobile Expert",
+      "D.C. Metro Area"
+    ]
+  },
+  experience: [
+    {
+      id: 1,
+      position: "iOS Developer",
+      company: "Self-Employed",
+      period: "Jun 2024 - Present",
+      description: "Led the full product lifecycle for Eight App Store applications, from concept and UI/UX design to deployment. Architected secure, scalable backend using Firebase and Core Data supporting 1,000+ daily operations.",
+      tech: ["Swift", "SwiftUI", "UIKit", "Firebase", "Core Data", "GPT-4 API"]
+    },
+    {
+      id: 2,
+      position: "Software Engineer Intern",
+      company: "HQLABS",
+      period: "May 2022 - Aug 2022",
+      description: "Built real-time transaction monitoring dashboard using React and TypeScript. Architected high-throughput gRPC services in Go for financial data processing.",
+      tech: ["React", "TypeScript", "Go", "gRPC", "Terraform", "ShadCN"]
+    }
+  ],
+  projects: [
+    {
+      id: 1,
+      name: "Journal App: Diary with Lock",
+      description: "",
+      icon: appIcon8,
+      year: "2025",
+      highlights: []
+    },
+    {
+      id: 2,
+      name: "Bookd: Reading Tracker & TBR",
+      description: "React, TypeScript, Node.js, AWS",
+      icon: appIcon1,
+      year: "2024",
+      highlights: ["Real-time collaboration", "WebSocket sync", "MongoDB storage"]
+    },
+    {
+      id: 3,
+      name: "Code Refactoring Engine",
+      description: "React, Go, GraphQL, Docker",
+      icon: appIcon3,
+      year: "2024",
+      highlights: ["AI-powered analysis", "LLM integration", "Rust service"]
+    },
+    {
+      id: 4,
+      name: "Market Data Platform",
+      description: "React, FastAPI, PostgreSQL",
+      icon: appIcon4,
+      year: "2023",
+      highlights: ["Real-time data", "Back-testing engine", "Strategy analysis"]
+    },
+    {
+      id: 5,
+      name: "Redis Clone",
+      description: "C++, TCP/IP, Non-Blocking I/O",
+      icon: appIcon5,
+      year: "2023",
+      highlights: ["High-performance", "Event-driven", "From scratch"]
+    },
+    {
+      id: 6,
+      name: "AI Chatbot Library",
+      description: "React, TypeScript, Rollup.js",
+      icon: appIcon6,
+      year: "2024",
+      highlights: ["NPM package", "Plug-and-play", "AI integration"]
+    },
+    {
+      id: 7,
+      name: "iOS App 1",
+      description: "Swift, SwiftUI, Firebase",
+      icon: appIcon7,
+      year: "2024",
+      highlights: ["App Store published", "1000+ users", "Real-time sync"]
+    },
+    {
+      id: 8,
+      name: "iOS App 2",
+      description: "Swift, UIKit, Core Data",
+      icon: appIcon8,
+      year: "2024",
+      highlights: ["Offline support", "GPT-4 integration", "25% engagement boost"]
+    },
+    {
+      id: 9,
+      name: "iOS App 3",
+      description: "SwiftUI, CloudKit",
+      icon: appIcon9,
+      year: "2024",
+      highlights: ["Cloud sync", "Push notifications", "In-app purchases"]
+    },
+    {
+      id: 10,
+      name: "iOS App 4",
+      description: "Swift, Firebase Auth",
+      icon: appIcon10,
+      year: "2024",
+      highlights: ["Secure auth", "Social login", "User analytics"]
+    }
+  ],
+  skills: {
+    languages: ["Java", "Swift", "Python", "JavaScript/TypeScript", "Go", "Rust", "C/C++", "C#", "SQL"],
+    frontend: ["React", "Angular", "SwiftUI", "UIKit", "HTML/CSS"],
+    backend: ["Node.js", "Spring Boot", "Django", "Express", "gRPC", "FastAPI"],
+    tools: ["Git/GitHub", "Docker", "Kubernetes", "AWS", "CI/CD", "Linux"],
+    databases: ["PostgreSQL", "MongoDB", "Firebase", "Core Data", "Redis"],
+    platforms: ["iOS", "Kafka", "RESTful APIs", "Terraform", "Agile"]
+  },
+  education: {
+    degree: "Bachelor of Science in Computer Science",
+    school: "Towson University",
+    location: "Towson, MD",
+    period: "Aug 2020 - May 2024",
+    highlights: [
+      "Computer Science Graduate",
+      "Software Engineering Focus",
+      "Mobile Development"
+    ]
+  },
+  contact: {
+    email: "mabdel.dev@gmail.com",
+    phone: "+1 (443) 449-0558",
+    location: "D.C. Metro Area",
+    linkedin: "https://www.linkedin.com/in/mabdel8",
+    github: "https://github.com/mabdel8"
+  }
+}
+
+// Hero Section with About Me
 function HeroSection() {
   const fadeUpVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -167,241 +224,438 @@ function HeroSection() {
       transition: {
         duration: 0.8,
         delay: i * 0.2,
-        ease: [0.25, 0.4, 0.25, 1],
+        ease: "easeOut",
       },
     }),
   }
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
-      
-      <div className="container mx-auto px-4 py-20">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            custom={0}
-            variants={fadeUpVariants}
-            initial="hidden"
-            animate="visible"
-            className="mb-8"
-          >
-            <div className="relative w-32 h-32 mx-auto mb-6">
-              <img
-                src={portfolioData.hero.image}
-                alt={portfolioData.hero.name}
-                className="w-full h-full rounded-full object-cover border-4 border-primary/20"
-              />
+    <section id="home" className="relative pt-32 pb-8 bg-background">
+      <div className="container mx-auto px-4">
+        <div className="max-w-3xl mx-auto">
+          <div className="flex items-start gap-8">
+            {/* Text Content */}
+            <div className="flex-1">
+              {/* Greeting */}
+              <motion.div
+                custom={0}
+                variants={fadeUpVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 tracking-tight">
+                  Hi, I'm <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">Mohamed</span> 👋
+                </h1>
+              </motion.div>
+
+              {/* Title */}
+              <motion.div
+                custom={1}
+                variants={fadeUpVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <p className="text-xl sm:text-2xl text-muted-foreground leading-relaxed mb-12 max-w-2xl">
+                  {portfolioData.hero.title}
+                </p>
+              </motion.div>
             </div>
-          </motion.div>
 
-          <motion.div
-            custom={1}
-            variants={fadeUpVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold mb-6 tracking-tight">
-              <span className="bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-                {portfolioData.hero.name}
-              </span>
-            </h1>
-          </motion.div>
+            {/* Profile Image */}
+            <motion.div
+              custom={1}
+              variants={fadeUpVariants}
+              initial="hidden"
+              animate="visible"
+              className="relative flex-shrink-0"
+            >
+              <div className="relative w-24 h-24 sm:w-32 sm:h-32">
+                <img
+                  src={portfolioData.hero.image}
+                  alt="Mohamed Abdelmagid"
+                  className="w-full h-full rounded-full object-cover"
+                />
+              </div>
+            </motion.div>
+          </div>
 
+          {/* About Section */}
           <motion.div
             custom={2}
             variants={fadeUpVariants}
             initial="hidden"
             animate="visible"
+            className="mt-2"
           >
-            <h2 className="text-xl sm:text-2xl md:text-3xl text-primary font-semibold mb-6">
-              {portfolioData.hero.title}
-            </h2>
-          </motion.div>
-
-          <motion.div
-            custom={3}
-            variants={fadeUpVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
-              {portfolioData.hero.description}
-            </p>
-          </motion.div>
-
-          <motion.div
-            custom={4}
-            variants={fadeUpVariants}
-            initial="hidden"
-            animate="visible"
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-          >
-            <Button size="lg" className="text-lg px-8 py-3 h-auto">
-              <DownloadIcon className="mr-2 h-5 w-5" />
-              Download Resume
-            </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 py-3 h-auto">
-              <MailIcon className="mr-2 h-5 w-5" />
-              Get In Touch
-            </Button>
-          </motion.div>
-        </div>
-      </div>
-
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <Glow variant="center" className="opacity-30" />
-      </div>
-    </section>
-  )
-}
-
-// App Showcase Section
-function AppShowcaseSection() {
-  return (
-    <section id="apps" className="py-20 bg-muted/30">
-      <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-            My iOS Apps
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            A collection of iOS applications I've developed, each designed with user experience and functionality in mind.
-          </p>
-        </motion.div>
-
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-          {portfolioData.apps.map((app, index) => (
-            <motion.div
-              key={app.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-            >
-              <Card className="p-6 text-center hover:border-foreground/20 transition-all duration-300 group cursor-pointer">
-                <div className="mb-4">
-                  <img
-                    src={app.icon}
-                    alt={app.name}
-                    className="w-16 h-16 mx-auto rounded-2xl group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <h3 className="font-semibold mb-2 text-sm">{app.name}</h3>
-                <p className="text-xs text-muted-foreground mb-4 leading-relaxed">{app.description}</p>
-                <Button size="sm" variant="ghost" className="text-xs h-8">
-                  <ExternalLinkIcon className="mr-1 h-3 w-3" />
-                  App Store
-                </Button>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// Tech Stack Section
-function TechStackSection() {
-  return (
-    <section id="tech" className="py-20">
-      <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-            Tech Stack & Tools
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            The technologies and tools I use to bring ideas to life.
-          </p>
-        </motion.div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {portfolioData.techStack.map((tech, index) => (
-            <motion.div
-              key={tech.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-            >
-              <Card className="p-6 text-center hover:border-foreground/20 transition-all duration-300">
-                <tech.icon className="h-12 w-12 mx-auto mb-4 text-primary" />
-                <h3 className="font-semibold mb-2">{tech.name}</h3>
-                <p className="text-sm text-muted-foreground">{tech.category}</p>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// About Section
-function AboutSection() {
-  return (
-    <section id="about" className="py-20 bg-muted/30">
-      <div className="container mx-auto px-4">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-              About Me
-            </h2>
-            <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+            <h2 className="text-2xl font-bold mb-6">About</h2>
+            <p className="text-muted-foreground leading-relaxed max-w-3xl mb-6">
               {portfolioData.about.bio}
             </p>
-            <div className="grid grid-cols-3 gap-6">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-primary mb-2">
-                  {portfolioData.about.experience}
-                </div>
-                <div className="text-sm text-muted-foreground">Experience</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-primary mb-2">
-                  {portfolioData.about.projects}
-                </div>
-                <div className="text-sm text-muted-foreground">Projects</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-primary mb-2">1M+</div>
-                <div className="text-sm text-muted-foreground">{portfolioData.about.clients}</div>
-              </div>
-            </div>
           </motion.div>
+        </div>
+      </div>
+    </section>
+  )
+}
 
+// Work Experience Timeline
+function ExperienceSection() {
+  return (
+    <section id="experience" className="py-12 bg-background">
+      <div className="container mx-auto px-4">
+        <div className="max-w-3xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="relative"
+            className="mb-12"
           >
-            <div className="relative">
-              <img
-                src="https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?w=600&h=400&fit=crop"
-                alt="Workspace"
-                className="w-full h-80 object-cover rounded-lg"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg" />
-            </div>
+            <h2 className="text-2xl font-bold mb-6">
+              Work Experience
+            </h2>
+          </motion.div>
+          <div className="relative">
+            {/* Timeline line */}
+            <div className="absolute left-8 top-0 bottom-0 w-[2px] bg-border hidden md:block" />
+            
+            {portfolioData.experience.map((exp, index) => (
+              <motion.div
+                key={exp.id}
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="relative flex items-start mb-12"
+              >
+                {/* Timeline dot */}
+                <div className="absolute left-8 w-4 h-4 bg-primary rounded-full border-4 border-background hidden md:block" />
+                
+                {/* Content */}
+                <div className="md:ml-20 ml-0 flex-1">
+                  <Card className="p-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
+                      <div>
+                        <h3 className="text-xl font-semibold">{exp.position}</h3>
+                        <p className="text-muted-foreground">{exp.company}</p>
+                      </div>
+                      <Badge variant="outline" className="mt-2 sm:mt-0">
+                        <CalendarIcon className="mr-1 h-3 w-3" />
+                        {exp.period}
+                      </Badge>
+                    </div>
+                    <p className="text-muted-foreground mb-4">{exp.description}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {exp.tech.map((tech, techIndex) => (
+                        <Badge key={techIndex} variant="secondary" className="text-xs">
+                          {tech}
+                        </Badge>
+                      ))}
+                    </div>
+                  </Card>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// Apps List Section
+function ProjectsSection() {
+  return (
+    <section id="projects" className="py-12">
+      <div className="container mx-auto px-4">
+        <div className="max-w-3xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="mb-12"
+          >
+            <h2 className="text-2xl font-bold mb-6">Apps & Projects</h2>
+          </motion.div>
+
+          <div className="space-y-8">
+            {portfolioData.projects.map((project, index) => {
+              const hasScreenshots = appScreenshots[project.id as keyof typeof appScreenshots]
+              
+              return (
+                <motion.div
+                  key={project.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="space-y-4"
+                >
+                  {/* App Info */}
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={project.icon}
+                      alt={project.name}
+                      className="w-16 h-16 rounded-xl hover:scale-105 transition-transform duration-300"
+                    />
+                    <div>
+                      <h3 className="text-xl font-semibold text-foreground">
+                        {project.name}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        {project.year}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {/* Screenshots */}
+                  {hasScreenshots && (
+                    <div className="ml-20">
+                      <Carousel 
+                        opts={{
+                          align: "start",
+                          loop: true,
+                        }}
+                        className="w-full"
+                      >
+                        <CarouselContent className="-ml-2 md:-ml-4">
+                          {hasScreenshots.screens.map((screenshot, screenshotIndex) => (
+                            <CarouselItem key={screenshotIndex} className="pl-2 md:pl-4 basis-1/2 md:basis-1/3">
+                              <div className="relative group">
+                                <img
+                                  src={screenshot}
+                                  alt={`${hasScreenshots.name} screenshot ${screenshotIndex + 1}`}
+                                  className="w-full h-auto rounded-lg hover:scale-105 transition-transform duration-300 cursor-pointer"
+                                />
+                              </div>
+                            </CarouselItem>
+                          ))}
+                        </CarouselContent>
+                        <CarouselPrevious className="left-2" />
+                        <CarouselNext className="right-2" />
+                      </Carousel>
+                    </div>
+                  )}
+                </motion.div>
+              )
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// Skills Section
+function SkillsSection() {
+  return (
+    <section id="skills" className="py-12 bg-background">
+      <div className="container mx-auto px-4">
+        <div className="max-w-3xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="mb-12"
+          >
+            <h2 className="text-2xl font-bold mb-6">
+              Skills & Technologies
+            </h2>
+          </motion.div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Languages */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <Card className="p-6">
+                <div className="flex items-center mb-4">
+                  <CodeIcon className="h-5 w-5 text-primary mr-2" />
+                  <h3 className="text-lg font-semibold">Languages</h3>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {portfolioData.skills.languages.map((skill, index) => (
+                    <Badge key={index} variant="secondary">
+                      {skill}
+                    </Badge>
+                  ))}
+                </div>
+              </Card>
+            </motion.div>
+
+            {/* Frontend */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              viewport={{ once: true }}
+            >
+              <Card className="p-6">
+                <div className="flex items-center mb-4">
+                  <LayoutIcon className="h-5 w-5 text-primary mr-2" />
+                  <h3 className="text-lg font-semibold">Frontend</h3>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {portfolioData.skills.frontend.map((skill, index) => (
+                    <Badge key={index} variant="secondary">
+                      {skill}
+                    </Badge>
+                  ))}
+                </div>
+              </Card>
+            </motion.div>
+
+            {/* Backend */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              <Card className="p-6">
+                <div className="flex items-center mb-4">
+                  <ServerIcon className="h-5 w-5 text-primary mr-2" />
+                  <h3 className="text-lg font-semibold">Backend</h3>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {portfolioData.skills.backend.map((skill, index) => (
+                    <Badge key={index} variant="secondary">
+                      {skill}
+                    </Badge>
+                  ))}
+                </div>
+              </Card>
+            </motion.div>
+
+            {/* Tools */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              viewport={{ once: true }}
+            >
+              <Card className="p-6">
+                <div className="flex items-center mb-4">
+                  <BriefcaseIcon className="h-5 w-5 text-primary mr-2" />
+                  <h3 className="text-lg font-semibold">Tools</h3>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {portfolioData.skills.tools.map((skill, index) => (
+                    <Badge key={index} variant="secondary">
+                      {skill}
+                    </Badge>
+                  ))}
+                </div>
+              </Card>
+            </motion.div>
+
+            {/* Databases */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              viewport={{ once: true }}
+            >
+              <Card className="p-6">
+                <div className="flex items-center mb-4">
+                  <DatabaseIcon className="h-5 w-5 text-primary mr-2" />
+                  <h3 className="text-lg font-semibold">Databases</h3>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {portfolioData.skills.databases.map((skill, index) => (
+                    <Badge key={index} variant="secondary">
+                      {skill}
+                    </Badge>
+                  ))}
+                </div>
+              </Card>
+            </motion.div>
+
+            {/* Platforms */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <Card className="p-6">
+                <div className="flex items-center mb-4">
+                  <SmartphoneIcon className="h-5 w-5 text-primary mr-2" />
+                  <h3 className="text-lg font-semibold">Platforms</h3>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {portfolioData.skills.platforms.map((skill, index) => (
+                    <Badge key={index} variant="secondary">
+                      {skill}
+                    </Badge>
+                  ))}
+                </div>
+              </Card>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// Education Section
+function EducationSection() {
+  return (
+    <section id="education" className="py-12">
+      <div className="container mx-auto px-4">
+        <div className="max-w-3xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="mb-12"
+          >
+            <h2 className="text-2xl font-bold mb-6">
+              Education
+            </h2>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <Card className="p-8">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+                <div className="flex items-center mb-4 md:mb-0">
+                  <GraduationCapIcon className="h-10 w-10 text-primary mr-4" />
+                  <div>
+                    <h3 className="text-xl font-semibold">{portfolioData.education.degree}</h3>
+                    <p className="text-muted-foreground">{portfolioData.education.school}</p>
+                  </div>
+                </div>
+                <div className="flex flex-col md:items-end">
+                  <Badge variant="outline" className="mb-2">
+                    {portfolioData.education.period}
+                  </Badge>
+                  <Badge variant="default">
+                    {portfolioData.education.location}
+                  </Badge>
+                </div>
+              </div>
+              <Separator className="my-6" />
+              <div>
+                <h4 className="font-semibold mb-3">Achievements & Activities</h4>
+                <div className="flex flex-wrap gap-2">
+                  {portfolioData.education.highlights.map((highlight, index) => (
+                    <Badge key={index} variant="secondary">
+                      {highlight}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            </Card>
           </motion.div>
         </div>
       </div>
@@ -412,24 +666,20 @@ function AboutSection() {
 // Contact Section
 function ContactSection() {
   return (
-    <section id="contact" className="py-20">
+    <section id="contact" className="py-12 bg-background">
       <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-            Let's Work Together
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Ready to bring your iOS app idea to life? Let's discuss your project and create something amazing together.
-          </p>
-        </motion.div>
-
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-3xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="mb-12"
+          >
+            <h2 className="text-2xl font-bold mb-6">
+              Let's Connect
+            </h2>
+          </motion.div>
           <div className="grid md:grid-cols-2 gap-12">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -471,11 +721,21 @@ function ContactSection() {
               <Separator className="my-6" />
 
               <div className="flex gap-4">
-                <Button size="sm" variant="outline" className="flex-1">
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  className="flex-1"
+                  onClick={() => window.open(portfolioData.contact.linkedin, '_blank')}
+                >
                   <LinkedinIcon className="mr-2 h-4 w-4" />
                   LinkedIn
                 </Button>
-                <Button size="sm" variant="outline" className="flex-1">
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  className="flex-1"
+                  onClick={() => window.open(portfolioData.contact.github, '_blank')}
+                >
                   <GithubIcon className="mr-2 h-4 w-4" />
                   GitHub
                 </Button>
@@ -494,7 +754,7 @@ function ContactSection() {
                     <label className="text-sm font-medium mb-2 block">Name</label>
                     <input
                       type="text"
-                      className="w-full px-3 py-2 border border-border rounded-md bg-background"
+                      className="w-full px-3 py-2 border border-border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary/20"
                       placeholder="Your name"
                     />
                   </div>
@@ -502,7 +762,7 @@ function ContactSection() {
                     <label className="text-sm font-medium mb-2 block">Email</label>
                     <input
                       type="email"
-                      className="w-full px-3 py-2 border border-border rounded-md bg-background"
+                      className="w-full px-3 py-2 border border-border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary/20"
                       placeholder="your.email@example.com"
                     />
                   </div>
@@ -510,7 +770,7 @@ function ContactSection() {
                     <label className="text-sm font-medium mb-2 block">Message</label>
                     <textarea
                       rows={4}
-                      className="w-full px-3 py-2 border border-border rounded-md bg-background resize-none"
+                      className="w-full px-3 py-2 border border-border rounded-md bg-background resize-none focus:outline-none focus:ring-2 focus:ring-primary/20"
                       placeholder="Tell me about your project..."
                     />
                   </div>
@@ -550,29 +810,31 @@ function Navigation() {
   return (
     <nav className={cn(
       "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-      isScrolled ? "bg-background/80 backdrop-blur-md border-b border-border" : "bg-transparent"
+      isScrolled ? "bg-background/95 backdrop-blur-md border-b border-border" : "bg-transparent"
     )}>
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          <div className="font-bold text-xl">
-            {portfolioData.hero.name.split(' ')[0]}
-          </div>
-          
-          <div className="hidden md:flex items-center space-x-8">
-            {['Home', 'Apps', 'Tech', 'About', 'Contact'].map((item) => (
-              <button
-                key={item}
-                onClick={() => scrollToSection(item.toLowerCase())}
-                className="text-sm font-medium hover:text-primary transition-colors"
-              >
-                {item}
-              </button>
-            ))}
-          </div>
+        <div className="max-w-3xl mx-auto">
+          <div className="flex items-center justify-between h-16">
+            <div className="font-bold text-xl">
+              Mohamed
+            </div>
+            
+            <div className="hidden md:flex items-center space-x-8">
+              {['Home', 'Experience', 'Projects', 'Skills', 'Education', 'Contact'].map((item) => (
+                <button
+                  key={item}
+                  onClick={() => scrollToSection(item.toLowerCase())}
+                  className="text-sm font-medium hover:text-primary transition-colors"
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
 
-          <Button size="sm" onClick={() => scrollToSection('contact')}>
-            Hire Me
-          </Button>
+            <Button size="sm" onClick={() => scrollToSection('contact')}>
+              Hire Me
+            </Button>
+          </div>
         </div>
       </div>
     </nav>
@@ -585,9 +847,10 @@ function App() {
     <div className="min-h-screen bg-background text-foreground">
       <Navigation />
       <HeroSection />
-      <AppShowcaseSection />
-      <TechStackSection />
-      <AboutSection />
+      <ExperienceSection />
+      <ProjectsSection />
+      <SkillsSection />
+      <EducationSection />
       <ContactSection />
     </div>
   )
