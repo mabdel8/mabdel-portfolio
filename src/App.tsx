@@ -26,7 +26,9 @@ import {
   CalendarIcon,
   BriefcaseIcon,
 } from 'lucide-react'
-import profilePic from './assets/profilepic.jpeg'
+import profilePic from './assets/profilepic.png'
+import swiftLogo from './assets/swiftlogo.png'
+import reactLogo from './assets/reactlogo.png'
 import appIcon1 from './assets/appicon1.png'
 import appIcon2 from './assets/appicon2.png'
 import appIcon3 from './assets/appicon3.png'
@@ -54,6 +56,13 @@ import app10screen4 from './assets/app10screenshots/04 – iPhone16.png'
 import app10screen5 from './assets/app10screenshots/05 – iPhone16.png'
 import app10screen6 from './assets/app10screenshots/06 – iPhone16.png'
 
+import pomo1 from './assets/app3screenshots/pomo1.png'
+import pomo2 from './assets/app3screenshots/pomo2.png'
+import pomo3 from './assets/app3screenshots/pomo3.png'
+import pomo4 from './assets/app3screenshots/pomo4.png'
+import pomo5 from './assets/app3screenshots/pomo5.png'
+import pomo6 from './assets/app3screenshots/pomo6.png'
+
 // Screenshot mappings
 const appScreenshots = {
   1: {
@@ -63,6 +72,10 @@ const appScreenshots = {
   2: {
     screens: [app1screen1, app1screen2, app1screen3, app1screen4, app1screen5, app1screen6, app1screen7],
     name: "iOS App 4"
+  },
+  3: {
+    screens: [pomo1, pomo2, pomo3, pomo4, pomo5, pomo6],
+    name: "Pomodoro Timer: Fokis"
   }
 }
 
@@ -123,17 +136,17 @@ const portfolioData = {
     },
     {
       id: 3,
-      name: "Code Refactoring Engine",
+      name: "Pomodoro Timer: Fokis",
       description: "React, Go, GraphQL, Docker",
-      icon: appIcon3,
+      icon: appIcon4,
       year: "2024",
       highlights: ["AI-powered analysis", "LLM integration", "Rust service"]
     },
     {
       id: 4,
-      name: "Market Data Platform",
+      name: "Pomodoro Timer: Fokis",
       description: "React, FastAPI, PostgreSQL",
-      icon: appIcon4,
+      icon: appIcon3,
       year: "2023",
       highlights: ["Real-time data", "Back-testing engine", "Strategy analysis"]
     },
@@ -300,6 +313,17 @@ function HeroSection() {
 
 // Work Experience Timeline
 function ExperienceSection() {
+  const getExperienceLogo = (expId: number) => {
+    switch (expId) {
+      case 1: // iOS Developer
+        return swiftLogo
+      case 2: // Software Engineer Intern
+        return reactLogo
+      default:
+        return null
+    }
+  }
+
   return (
     <section id="experience" className="py-12 bg-background">
       <div className="container mx-auto px-4">
@@ -317,45 +341,57 @@ function ExperienceSection() {
           </motion.div>
           <div className="relative">
             {/* Timeline line */}
-            <div className="absolute left-8 top-0 bottom-0 w-[2px] bg-border hidden md:block" />
+            <div className="absolute left-6 top-0 bottom-0 w-[2px] bg-border" />
             
-            {portfolioData.experience.map((exp, index) => (
-              <motion.div
-                key={exp.id}
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="relative flex items-start mb-12"
-              >
-                {/* Timeline dot */}
-                <div className="absolute left-8 w-4 h-4 bg-primary rounded-full border-4 border-background hidden md:block" />
-                
-                {/* Content */}
-                <div className="md:ml-20 ml-0 flex-1">
-                  <Card className="p-6">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
-                      <div>
-                        <h3 className="text-xl font-semibold">{exp.position}</h3>
-                        <p className="text-muted-foreground">{exp.company}</p>
-                      </div>
-                      <Badge variant="outline" className="mt-2 sm:mt-0">
-                        <CalendarIcon className="mr-1 h-3 w-3" />
-                        {exp.period}
-                      </Badge>
-                    </div>
-                    <p className="text-muted-foreground mb-4">{exp.description}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {exp.tech.map((tech, techIndex) => (
-                        <Badge key={techIndex} variant="secondary" className="text-xs">
-                          {tech}
+            {portfolioData.experience.map((exp, index) => {
+              const logo = getExperienceLogo(exp.id)
+              
+              return (
+                <motion.div
+                  key={exp.id}
+                  initial={{ opacity: 0, x: -50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="relative flex items-start mb-12"
+                >
+                  {/* Timeline logo */}
+                  <div className="absolute left-3 w-6 h-6 bg-background rounded-full flex items-center justify-center border-2 border-primary">
+                    {logo && (
+                      <img
+                        src={logo}
+                        alt={`${exp.position} logo`}
+                        className="w-4 h-4 rounded-sm"
+                      />
+                    )}
+                  </div>
+                  
+                  {/* Content */}
+                  <div className="ml-16 flex-1">
+                    <div className="mb-4">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                        <div>
+                          <h3 className="text-xl font-semibold">{exp.position}</h3>
+                          <p className="text-muted-foreground">{exp.company}</p>
+                        </div>
+                        <Badge variant="outline" className="mt-2 sm:mt-0 w-fit">
+                          <CalendarIcon className="mr-1 h-3 w-3" />
+                          {exp.period}
                         </Badge>
-                      ))}
+                      </div>
+                      <p className="text-muted-foreground mb-4">{exp.description}</p>
+                      <div className="flex flex-wrap gap-2">
+                        {exp.tech.map((tech, techIndex) => (
+                          <Badge key={techIndex} variant="secondary" className="text-xs">
+                            {tech}
+                          </Badge>
+                        ))}
+                      </div>
                     </div>
-                  </Card>
-                </div>
-              </motion.div>
-            ))}
+                  </div>
+                </motion.div>
+              )
+            })}
           </div>
         </div>
       </div>
