@@ -8,7 +8,6 @@ import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import { cn } from '@/lib/utils'
-import { TypingAnimation } from '@/components/TypingAnimation'
 import { 
   ArrowRightIcon, 
   GithubIcon, 
@@ -16,8 +15,6 @@ import {
   MailIcon, 
   PhoneIcon,
   MapPinIcon,
-  DownloadIcon,
-  ExternalLinkIcon,
   CodeIcon,
   SmartphoneIcon,
   ServerIcon,
@@ -27,11 +24,7 @@ import {
   CalendarIcon,
   BriefcaseIcon,
   ArrowLeftIcon,
-  GitBranchIcon,
-  CloudIcon,
-  CpuIcon,
   LineChartIcon,
-  PackageIcon,
   MessageSquareIcon,
 } from 'lucide-react'
 import profilePic from './assets/profilepic.png'
@@ -130,7 +123,7 @@ const portfolioData = {
     resumeUrl: "#"
   },
   about: {
-    bio: "Computer Science graduate from Towson University with expertise in iOS development and full-stack engineering. Currently leading the development of eight App Store applications while specializing in Swift, React, and modern backend technologies. Passionate about creating intuitive user experiences and building scalable systems that serve thousands of users daily.",
+    bio: "Computer Science graduate from Towson University with expertise in iOS development and full-stack engineering. Currently leading the development of Ten App Store applications while specializing in Swift, React, and modern backend technologies. Passionate about creating intuitive user experiences and building scalable systems that serve thousands of users daily.",
     highlights: [
       "10 Apps on App Store",
       "Full-Stack Developer",
@@ -348,7 +341,7 @@ function HeroSection() {
       transition: {
         duration: 0.8,
         delay: i * 0.2,
-        ease: "easeOut",
+        ease: [0.25, 0.1, 0.25, 1] as const,
       },
     }),
   }
