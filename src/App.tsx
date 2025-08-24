@@ -63,6 +63,24 @@ import pomo4 from './assets/app3screenshots/pomo4.png'
 import pomo5 from './assets/app3screenshots/pomo5.png'
 import pomo6 from './assets/app3screenshots/pomo6.png'
 
+import hd1 from './assets/aihomescreenshots/hd1.png'
+import hd2 from './assets/aihomescreenshots/hd2.png'
+import hd3 from './assets/aihomescreenshots/hd3.png'
+import hd4 from './assets/aihomescreenshots/hd4.png'
+
+import penmo1 from './assets/penmoscreenshots/penmo1.png'
+import penmo2 from './assets/penmoscreenshots/penmo2.png'
+import penmo3 from './assets/penmoscreenshots/penmo3.png'
+import penmo4 from './assets/penmoscreenshots/penmo4.png'
+import penmo5 from './assets/penmoscreenshots/penmo5.png'
+
+import party1 from './assets/partyscreenshots/party1.png'
+import party2 from './assets/partyscreenshots/party2.png'
+import party3 from './assets/partyscreenshots/party3.png'
+
+
+
+
 // Screenshot mappings
 const appScreenshots = {
   1: {
@@ -76,6 +94,18 @@ const appScreenshots = {
   3: {
     screens: [pomo1, pomo2, pomo3, pomo4, pomo5, pomo6],
     name: "Pomodoro Timer: Fokis"
+  },
+  4: {
+    screens: [hd1, hd2, hd3, hd4],
+    name: "AI Home Design"
+  },
+  5: {
+    screens: [penmo1, penmo2, penmo3, penmo4, penmo5],
+    name: "Penmo: Expense Tracker"
+  },
+  6: {
+    screens: [party1, party2, party3],
+    name: "Party Games: Queestion games"
   }
 }
 
@@ -144,47 +174,47 @@ const portfolioData = {
     },
     {
       id: 4,
-      name: "Pomodoro Timer: Fokis",
+      name: "AI Home Design & Planner",
       description: "React, FastAPI, PostgreSQL",
-      icon: appIcon3,
-      year: "2023",
+      icon: appIcon10,
+      year: "2025",
       highlights: ["Real-time data", "Back-testing engine", "Strategy analysis"]
     },
     {
       id: 5,
-      name: "Redis Clone",
+      name: "Expense Tracker: Penmo",
       description: "C++, TCP/IP, Non-Blocking I/O",
-      icon: appIcon5,
+      icon: appIcon2,
       year: "2023",
       highlights: ["High-performance", "Event-driven", "From scratch"]
     },
     {
       id: 6,
-      name: "AI Chatbot Library",
+      name: "Party Games: Game Night",
       description: "React, TypeScript, Rollup.js",
-      icon: appIcon6,
+      icon: appIcon7,
       year: "2024",
       highlights: ["NPM package", "Plug-and-play", "AI integration"]
     },
     {
       id: 7,
-      name: "iOS App 1",
+      name: "Image to PDF: Convert to PDF",
       description: "Swift, SwiftUI, Firebase",
-      icon: appIcon7,
+      icon: appIcon3,
       year: "2024",
       highlights: ["App Store published", "1000+ users", "Real-time sync"]
     },
     {
       id: 8,
-      name: "iOS App 2",
+      name: "Weight Loss Tracker: WeightLog",
       description: "Swift, UIKit, Core Data",
-      icon: appIcon8,
+      icon: appIcon5,
       year: "2024",
       highlights: ["Offline support", "GPT-4 integration", "25% engagement boost"]
     },
     {
       id: 9,
-      name: "iOS App 3",
+      name: "Invoice Maker & Easy Estimate",
       description: "SwiftUI, CloudKit",
       icon: appIcon9,
       year: "2024",
@@ -192,9 +222,9 @@ const portfolioData = {
     },
     {
       id: 10,
-      name: "iOS App 4",
+      name: "AI Homework Helper: AI Scanner",
       description: "Swift, Firebase Auth",
-      icon: appIcon10,
+      icon: appIcon6,
       year: "2024",
       highlights: ["Secure auth", "Social login", "User analytics"]
     }
