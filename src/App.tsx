@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { motion } from 'framer-motion'
+import emailjs from '@emailjs/browser'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -826,7 +827,7 @@ function SkillsSection() {
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
             >
-              <Card className="p-6">
+              <Card className="p-6 h-48">
                 <div className="flex items-center mb-4">
                   <CodeIcon className="h-5 w-5 text-primary mr-2" />
                   <h3 className="text-lg font-semibold">Languages</h3>
@@ -848,7 +849,7 @@ function SkillsSection() {
               transition={{ duration: 0.5, delay: 0.1 }}
               viewport={{ once: true }}
             >
-              <Card className="p-6">
+              <Card className="p-6 h-48">
                 <div className="flex items-center mb-4">
                   <LayoutIcon className="h-5 w-5 text-primary mr-2" />
                   <h3 className="text-lg font-semibold">Frontend</h3>
@@ -870,7 +871,7 @@ function SkillsSection() {
               transition={{ duration: 0.5, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              <Card className="p-6">
+              <Card className="p-6 h-48">
                 <div className="flex items-center mb-4">
                   <ServerIcon className="h-5 w-5 text-primary mr-2" />
                   <h3 className="text-lg font-semibold">Backend</h3>
@@ -892,7 +893,7 @@ function SkillsSection() {
               transition={{ duration: 0.5, delay: 0.3 }}
               viewport={{ once: true }}
             >
-              <Card className="p-6">
+              <Card className="p-6 h-48">
                 <div className="flex items-center mb-4">
                   <BriefcaseIcon className="h-5 w-5 text-primary mr-2" />
                   <h3 className="text-lg font-semibold">Tools</h3>
@@ -914,7 +915,7 @@ function SkillsSection() {
               transition={{ duration: 0.5, delay: 0.4 }}
               viewport={{ once: true }}
             >
-              <Card className="p-6">
+              <Card className="p-6 h-48">
                 <div className="flex items-center mb-4">
                   <DatabaseIcon className="h-5 w-5 text-primary mr-2" />
                   <h3 className="text-lg font-semibold">Databases</h3>
@@ -936,7 +937,7 @@ function SkillsSection() {
               transition={{ duration: 0.5, delay: 0.5 }}
               viewport={{ once: true }}
             >
-              <Card className="p-6">
+              <Card className="p-6 h-48">
                 <div className="flex items-center mb-4">
                   <SmartphoneIcon className="h-5 w-5 text-primary mr-2" />
                   <h3 className="text-lg font-semibold">Platforms</h3>
@@ -1019,6 +1020,47 @@ function EducationSection() {
 
 // Contact Section
 function ContactSection() {
+  const formRef = useRef<HTMLFormElement>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [formStatus, setFormStatus] = useState<{
+    type: 'success' | 'error' | null
+    message: string
+  }>({ type: null, message: '' })
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setIsLoading(true)
+    setFormStatus({ type: null, message: '' })
+
+    try {
+      // Initialize EmailJS with your public key (you'll need to replace this)
+      emailjs.init("jZW_3I1gS-E5XZXAv") // Replace with your EmailJS public key
+      
+      const result = await emailjs.sendForm(
+        'service_z4tgdto', // Replace with your EmailJS service ID
+        'template_qcudaxh', // Replace with your EmailJS template ID
+        formRef.current!,
+        'jZW_3I1gS-E5XZXAv' // Replace with your EmailJS public key
+      )
+
+      if (result.status === 200) {
+        setFormStatus({ 
+          type: 'success', 
+          message: 'Message sent successfully! I\'ll get back to you soon.' 
+        })
+        formRef.current?.reset()
+      }
+    } catch (error) {
+      console.error('Email send error:', error)
+      setFormStatus({ 
+        type: 'error', 
+        message: 'Failed to send message. Please try again or email me directly.' 
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
     <section id="contact" className="py-12 bg-background">
       <div className="container mx-auto px-4">
@@ -1103,34 +1145,72 @@ function ContactSection() {
               viewport={{ once: true }}
             >
               <Card className="p-6">
-                <form className="space-y-4">
+                <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
                   <div>
                     <label className="text-sm font-medium mb-2 block">Name</label>
                     <input
                       type="text"
+                      name="user_name"
                       className="w-full px-3 py-2 border border-border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary/20"
                       placeholder="Your name"
+                      required
+                      disabled={isLoading}
                     />
                   </div>
                   <div>
                     <label className="text-sm font-medium mb-2 block">Email</label>
                     <input
                       type="email"
+                      name="user_email"
                       className="w-full px-3 py-2 border border-border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary/20"
                       placeholder="your.email@example.com"
+                      required
+                      disabled={isLoading}
                     />
                   </div>
                   <div>
                     <label className="text-sm font-medium mb-2 block">Message</label>
                     <textarea
+                      name="message"
                       rows={4}
                       className="w-full px-3 py-2 border border-border rounded-md bg-background resize-none focus:outline-none focus:ring-2 focus:ring-primary/20"
                       placeholder="Tell me about your project..."
+                      required
+                      disabled={isLoading}
                     />
                   </div>
-                  <Button className="w-full">
-                    Send Message
-                    <ArrowRightIcon className="ml-2 h-4 w-4" />
+                  
+                  {/* Status message */}
+                  {formStatus.type && (
+                    <div className={`p-3 rounded-md text-sm ${
+                      formStatus.type === 'success' 
+                        ? 'bg-green-500/10 text-green-600 dark:text-green-400' 
+                        : 'bg-red-500/10 text-red-600 dark:text-red-400'
+                    }`}>
+                      {formStatus.message}
+                    </div>
+                  )}
+                  
+                  <Button 
+                    type="submit" 
+                    className="w-full" 
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <>
+                        Sending...
+                        <motion.div
+                          className="ml-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full"
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        Send Message
+                        <ArrowRightIcon className="ml-2 h-4 w-4" />
+                      </>
+                    )}
                   </Button>
                 </form>
               </Card>
