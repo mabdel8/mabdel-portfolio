@@ -1033,14 +1033,14 @@ function ContactSection() {
     setFormStatus({ type: null, message: '' })
 
     try {
-      // Initialize EmailJS with your public key (you'll need to replace this)
-      emailjs.init("jZW_3I1gS-E5XZXAv") // Replace with your EmailJS public key
+      // Initialize EmailJS with environment variables
+      emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY)
       
       const result = await emailjs.sendForm(
-        'service_z4tgdto', // Replace with your EmailJS service ID
-        'template_qcudaxh', // Replace with your EmailJS template ID
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
         formRef.current!,
-        'jZW_3I1gS-E5XZXAv' // Replace with your EmailJS public key
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       )
 
       if (result.status === 200) {
