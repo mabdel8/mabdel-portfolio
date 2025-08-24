@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import { cn } from '@/lib/utils'
 import { TypingAnimation } from '@/components/TypingAnimation'
@@ -36,6 +36,7 @@ import {
 import profilePic from './assets/profilepic.png'
 import swiftLogo from './assets/swiftlogo.png'
 import reactLogo from './assets/reactlogo.png'
+import techIcons from './assets/icons.json'
 import appIcon1 from './assets/appicon1.png'
 import appIcon2 from './assets/appicon2.png'
 import appIcon3 from './assets/appicon3.png'
@@ -569,12 +570,12 @@ function AppsSection() {
                       >
                         <CarouselContent className="-ml-2 md:-ml-4">
                           {hasScreenshots.screens.map((screenshot, screenshotIndex) => (
-                            <CarouselItem key={screenshotIndex} className="pl-2 md:pl-4 basis-1/2 md:basis-1/3">
+                            <CarouselItem key={screenshotIndex} className="pl-0 md:pl-0 basis-1/2 md:basis-1/3">
                               <div className="relative group">
                                 <img
                                   src={screenshot}
                                   alt={`${hasScreenshots.name} screenshot ${screenshotIndex + 1}`}
-                                  className="w-full h-auto rounded-lg hover:scale-105 transition-transform duration-300 cursor-pointer"
+                                  className="max-w-[80%] h-auto rounded-lg hover:scale-105 transition-transform duration-300 cursor-pointer"
                                 />
                               </div>
                             </CarouselItem>
@@ -712,6 +713,93 @@ function ProjectsSection() {
   )
 }
 
+// Tech Stack Section with Auto-Scrolling Icons
+function TechStackSection() {
+  // Duplicate the array three times to create seamless loop
+  const originalTechs = techIcons.technologies
+  const technologies = [...originalTechs, ...originalTechs, ...originalTechs]
+  
+  // Calculate the scroll percentage dynamically based on actual number of technologies
+  // We need to scroll through exactly one set of the original technologies
+  const totalItems = technologies.length // 63 items (21 * 3)
+  const originalItemCount = originalTechs.length // 21 items
+  const scrollPercentage = -(800 * originalItemCount) / totalItems // -(100 * 21) / 63 = -33.33%
+  
+  return (
+    <section id="tech-stack" className="py-12 bg-background">
+      {/* <div className="container mx-auto px-4">
+        <div className="max-w-3xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="mb-12"
+          >
+            <h2 className="text-2xl font-bold mb-6">Technologies</h2>
+          </motion.div>
+        </div>
+      </div> */}
+      
+      {/* Auto-scrolling tech icons with blur edges */}
+      <div 
+        className="relative max-w-3xl mx-auto overflow-hidden"
+        // style={{
+        //   maskImage: 'linear-gradient(to right, transparent, black 5%, black 25%, transparent)',
+        //   WebkitMaskImage: 'linear-gradient(to right, transparent, black 5%, black 85%, transparent)',
+        // }}
+      >
+        {/* Scrolling container */}
+        <motion.div 
+          className="flex gap-14"
+          animate={{
+            x: ["0%", `${scrollPercentage}%`],
+          }}
+          transition={{
+            x: {
+              repeat: Infinity,
+              repeatType: "loop",
+              duration: 16, // Faster animation to show all 21 technologies efficiently
+              ease: "linear",
+            },
+          }}
+        >
+          {technologies.map((tech, index) => (
+            <motion.div
+              key={`${tech.name}-${index}`}
+              className="flex-shrink-0 group"
+              whileHover={{ scale: 1.15 }}
+              transition={{ duration: 0.2 }}
+            >
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="w-16 h-16 flex items-center justify-center">
+                    <img
+                      src={tech.icon}
+                      alt={tech.name}
+                      // style={{ filter: "grayscale(100%)" }} 
+                      className="w-14 h-14 object-contain transition-transform duration-300"
+                      loading="lazy"
+                    />
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{tech.name}</p>
+                </TooltipContent>
+              </Tooltip>
+            </motion.div>
+          ))}
+        </motion.div>
+        {/* Left veil */}
+  <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white to-transparent dark:from-neutral-900" />
+
+{/* Right veil */}
+<div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white to-transparent dark:from-neutral-900" />
+      </div>
+    </section>
+  )
+}
+
 // Skills Section
 function SkillsSection() {
   return (
@@ -725,11 +813,12 @@ function SkillsSection() {
             viewport={{ once: true }}
             className="mb-12"
           >
-            <h2 className="text-2xl font-bold mb-6">
+            <h2 className="text-2xl font-bold">
               Skills & Technologies
             </h2>
           </motion.div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <TechStackSection />
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
             {/* Languages */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -1109,16 +1198,18 @@ function Navigation() {
 // Main Portfolio Component
 function App() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Navigation />
-      <HeroSection />
-      <ExperienceSection />
-      <AppsSection />
-      <ProjectsSection />
-      <SkillsSection />
-      <EducationSection />
-      <ContactSection />
-    </div>
+    <TooltipProvider>
+      <div className="min-h-screen bg-background text-foreground">
+        <Navigation />
+        <HeroSection />
+        <ExperienceSection />
+        <AppsSection />
+        <ProjectsSection />
+        <SkillsSection />
+        <EducationSection />
+        <ContactSection />
+      </div>
+    </TooltipProvider>
   )
 }
 

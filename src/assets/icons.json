@@ -55,6 +55,34 @@
       {
         "name": "Swift",
         "icon": "https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/swift.png"
+      },
+      {
+        "name": "MySQL",
+        "icon": "https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/mysql.png"
+      },
+      {
+        "name": "Go",
+        "icon": "https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/go.png"
+      },
+      {
+        "name": "Python",
+        "icon": "https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/python.png"
+      },
+      {
+        "name": "Django",
+        "icon": "https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/django.png"
+      },
+      {
+        "name": "C++",
+        "icon": "https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/c++.png"
+      },
+      {
+        "name": "Java",
+        "icon": "https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/java.png"
+      },
+      {
+        "name": "Spring",
+        "icon": "https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/spring.png"
       }
     ]
   }
