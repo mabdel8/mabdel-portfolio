@@ -25,6 +25,13 @@ import {
   GraduationCapIcon,
   CalendarIcon,
   BriefcaseIcon,
+  ArrowLeftIcon,
+  GitBranchIcon,
+  CloudIcon,
+  CpuIcon,
+  LineChartIcon,
+  PackageIcon,
+  MessageSquareIcon,
 } from 'lucide-react'
 import profilePic from './assets/profilepic.png'
 import swiftLogo from './assets/swiftlogo.png'
@@ -229,6 +236,78 @@ const portfolioData = {
       highlights: ["Secure auth", "Social login", "User analytics"]
     }
   ],
+  technicalProjects: [
+    {
+      id: 1,
+      name: "Mobile Automation MCP Server for LLMs",
+      date: "Dec 2024",
+      tech: ["TypeScript", "Node.js", "iOS", "go-ios", "WDA"],
+      icon: SmartphoneIcon,
+      githubUrl: "https://github.com/mabdel8/mobile-automation-mcp",
+      description: [
+        "Created a platform-agnostic <span class='font-semibold text-foreground'>Model Context Protocol (MCP)</span> server that enables <span class='font-semibold text-foreground'>AI agents and LLMs</span> to automate and interact with native mobile applications across iOS, Android, simulators, and physical devices.",
+        "Engineered a system that provides agents with a structured understanding of the UI through <span class='font-semibold text-foreground'>accessibility trees</span>, falling back to visual screenshot analysis, to allow for deterministic, multi-step task automation without requiring direct app-specific API knowledge."
+      ]
+    },
+    {
+      id: 2,
+      name: "Real-time Collaborative Whiteboard Application",
+      date: "Sep 2024",
+      tech: ["React", "TypeScript", "Node.js", "Express", "AWS", "WebSockets", "MongoDB"],
+      icon: LayoutIcon,
+      githubUrl: "https://github.com/mabdel8/collaborative-whiteboard",
+      description: [
+        "Developed a full-stack, real-time collaborative whiteboard application with <span class='font-semibold text-foreground'>React/TypeScript</span> and a <span class='font-semibold text-foreground'>Node.js/Express.js</span> backend, enabling concurrent user interactions.",
+        "Implemented <span class='font-semibold text-foreground'>WebSockets</span> for instantaneous communication and designed a <span class='font-semibold text-foreground'>MongoDB</span> database to store data.",
+        "Deployed the application to <span class='font-semibold text-foreground'>AWS</span> and established a <span class='font-semibold text-foreground'>CI/CD pipeline</span> with GitHub Actions for continuous delivery."
+      ]
+    },
+    {
+      id: 3,
+      name: "AI-Powered Code Refactoring & Optimization Engine",
+      date: "Jul 2024",
+      tech: ["React", "Go", "Vector DB", "GraphQL", "Docker", "Rust", "OpenAI API"],
+      icon: CodeIcon,
+      githubUrl: "https://github.com/mabdel8/code-refactoring-engine",
+      description: [
+        "Created a platform that analyzes and refactors code for better readability and efficiency using <span class='font-semibold text-foreground'>LLMs</span>.",
+        "Developed a backend in <span class='font-semibold text-foreground'>Go</span> featuring a <span class='font-semibold text-foreground'>GraphQL API</span> for seamless frontend communication and integrated a custom <span class='font-semibold text-foreground'>Rust-based service</span> to interface with the <span class='font-semibold text-foreground'>OpenAI API</span>, leveraging LLMs to generate code refactoring suggestions."
+      ]
+    },
+    {
+      id: 4,
+      name: "Market Data Analysis & Strategy Back-testing Platform",
+      date: "May 2024",
+      tech: ["React", "FastAPI", "Python", "PostgreSQL"],
+      icon: LineChartIcon,
+      githubUrl: "https://github.com/mabdel8/market-data-platform",
+      description: [
+        "Engineered a distributed platform to ingest real-time <span class='font-semibold text-foreground'>financial market data</span>, process it through a custom <span class='font-semibold text-foreground'>back-testing engine</span>, and analyze <span class='font-semibold text-foreground'>algorithmic trading strategy</span> performance against historical data."
+      ]
+    },
+    {
+      id: 5,
+      name: "Redis Clone (In-Memory Key-Value Store)",
+      date: "Mar 2024",
+      tech: ["C++", "TCP/IP", "Non-Blocking I/O"],
+      icon: DatabaseIcon,
+      githubUrl: "https://github.com/mabdel8/redis-clone",
+      description: [
+        "Engineered a high-performance, event-driven <span class='font-semibold text-foreground'>Redis clone</span> in <span class='font-semibold text-foreground'>C++</span> from scratch."
+      ]
+    },
+    {
+      id: 6,
+      name: "React AI Chatbot Component Library",
+      date: "Jan 2024",
+      tech: ["React", "TypeScript", "Rollup.js", "Storybook", "NPM"],
+      icon: MessageSquareIcon,
+      githubUrl: "https://github.com/mabdel8/react-ai-chatbot",
+      description: [
+        "Published an open-source component library to <span class='font-semibold text-foreground'>NPM</span> providing developers with a highly customizable, plug-and-play <span class='font-semibold text-foreground'>chatbot UI</span> for easy integration of <span class='font-semibold text-foreground'>AI services</span>."
+      ]
+    }
+  ],
   skills: {
     languages: ["Java", "Swift", "Python", "JavaScript/TypeScript", "Go", "Rust", "C/C++", "C#", "SQL"],
     frontend: ["React", "Angular", "SwiftUI", "UIKit", "HTML/CSS"],
@@ -429,8 +508,11 @@ function ExperienceSection() {
   )
 }
 
-// Apps List Section
-function ProjectsSection() {
+// Apps Section
+function AppsSection() {
+  const [showAllApps, setShowAllApps] = useState(false)
+  const visibleApps = showAllApps ? portfolioData.projects : portfolioData.projects.slice(0, 6)
+  
   return (
     <section id="projects" className="py-12">
       <div className="container mx-auto px-4">
@@ -442,11 +524,11 @@ function ProjectsSection() {
             viewport={{ once: true }}
             className="mb-12"
           >
-            <h2 className="text-2xl font-bold mb-6">Apps & Projects</h2>
+            <h2 className="text-2xl font-bold mb-6">Apps</h2>
           </motion.div>
 
           <div className="space-y-8">
-            {portfolioData.projects.map((project, index) => {
+            {visibleApps.map((project, index) => {
               const hasScreenshots = appScreenshots[project.id as keyof typeof appScreenshots]
               
               return (
@@ -503,6 +585,123 @@ function ProjectsSection() {
                       </Carousel>
                     </div>
                   )}
+                </motion.div>
+              )
+            })}
+            
+            {/* See More / See Less Button */}
+            {portfolioData.projects.length > 6 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+                className="flex justify-center pt-8"
+              >
+                <Button 
+                  variant="outline" 
+                  onClick={() => setShowAllApps(!showAllApps)}
+                  className="flex items-center gap-2"
+                >
+                  {showAllApps ? (
+                    <>
+                      Show Less
+                      <ArrowLeftIcon className="w-4 h-4 rotate-90" />
+                    </>
+                  ) : (
+                    <>
+                      See More Apps ({portfolioData.projects.length - 6} more)
+                      <ArrowLeftIcon className="w-4 h-4 -rotate-90" />
+                    </>
+                  )}
+                </Button>
+              </motion.div>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// Projects Section
+function ProjectsSection() {
+  return (
+    <section id="technical-projects" className="py-12">
+      <div className="container mx-auto px-4">
+        <div className="max-w-3xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="mb-12"
+          >
+            <h2 className="text-2xl font-bold mb-6">Projects</h2>
+          </motion.div>
+
+          <div className="space-y-8">
+            {portfolioData.technicalProjects.map((project, index) => {
+              const Icon = project.icon
+              
+              return (
+                <motion.div
+                  key={project.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="group"
+                >
+                  <div className="flex gap-4">
+                    {/* Project Icon */}
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
+                        <Icon className="w-6 h-6 text-primary" />
+                      </div>
+                    </div>
+                    
+                    {/* Project Content */}
+                    <div className="flex-1">
+                      {/* Project Name */}
+                      <h3 className="text-xl font-semibold mb-1 group-hover:text-primary transition-colors">
+                        {project.name}
+                      </h3>
+                      {/* Date */}
+                      <p className="text-sm text-muted-foreground mb-2">
+                        {project.date}
+                      </p>
+                      
+                      {/* Tech Stack Tags with GitHub Link */}
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        {project.tech.map((tech, techIndex) => (
+                          <Badge key={techIndex} variant="secondary" className="text-xs">
+                            {tech}
+                          </Badge>
+                        ))}
+                        {/* GitHub Source Badge */}
+                        {project.githubUrl && (
+                          <Badge 
+                            className="text-xs bg-black hover:bg-black/90 text-white cursor-pointer"
+                            onClick={() => window.open(project.githubUrl, '_blank')}
+                          >
+                            <GithubIcon className="w-3 h-3 mr-1" />
+                            Source
+                          </Badge>
+                        )}
+                      </div>
+                      
+                      {/* Description Points */}
+                      <ul className="space-y-2">
+                        {project.description.map((point, pointIndex) => (
+                          <li key={pointIndex} className="text-sm text-muted-foreground leading-relaxed flex items-start">
+                            <span className="text-primary mr-2 mt-1">•</span>
+                            <span dangerouslySetInnerHTML={{ __html: point }} />
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
                 </motion.div>
               )
             })}
@@ -914,6 +1113,7 @@ function App() {
       <Navigation />
       <HeroSection />
       <ExperienceSection />
+      <AppsSection />
       <ProjectsSection />
       <SkillsSection />
       <EducationSection />
